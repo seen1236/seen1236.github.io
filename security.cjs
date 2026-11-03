@@ -20,7 +20,7 @@ function loadPolicy(root) {
   };
   const trustedProxies = addresses('trustedProxyIPs');
   const allowedPeers = addresses('allowedPeerIPs');
-  const publicOrigin = new URL(config.publicOrigin || 'https://s.jirayu.net').origin;
+  const publicOrigin = new URL(config.publicOrigin || 'https://seen1236.github.io').origin;
   if (!publicOrigin.startsWith('https://')) throw Error('Public origin requires HTTPS');
   return {trustedProxies, allowedPeers, publicOrigin};
 }

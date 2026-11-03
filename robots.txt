@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://s.jirayu.net/sitemap.xml
+Sitemap: https://seen1236.github.io/sitemap.xml

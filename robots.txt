@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /private/
+Disallow: /tests/
+
+User-agent: Googlebot-Image
+Allow: /
+
+Sitemap: https://seen1236.github.io/sitemap.xml

@@ -6,9 +6,13 @@ const net = require('node:net');
 const vm = require('node:vm');
 const {spawn} = require('node:child_process');
 const {once} = require('node:events');
+<<<<<<< HEAD
 let chromium;
 try { ({chromium} = require(process.env.PLAYWRIGHT_MODULE || 'playwright')); }
 catch { console.log('SKIP fresh-load.cjs: playwright is not installed.'); process.exit(0); }
+=======
+const {chromium} = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
+>>>>>>> 2a13f9e570c6593d0e6504321535d8809ef52f98
 const root = path.resolve(__dirname, '..');
 
 (async () => {

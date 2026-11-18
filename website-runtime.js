@@ -128,9 +128,15 @@ function smoothScrollTo(targetY, fromWheel, options){
     var startY = window.scrollY;
     var diff = targetY - startY;
     var startTime = performance.now();
+<<<<<<< HEAD
     // Ultra-smooth duration (reduced by 50% for faster response: 475ms default)
     var duration = options && Number.isFinite(options.duration)
         ? Math.max(150, Math.min(750, options.duration)) : 475;
+=======
+    // Ultra-smooth duration (950ms default) for luxurious gliding
+    var duration = options && Number.isFinite(options.duration)
+        ? Math.max(300, Math.min(1500, options.duration)) : 950;
+>>>>>>> 2a13f9e570c6593d0e6504321535d8809ef52f98
     function tick(now){
         var p = Math.min(1, (now - startTime) / duration);
         // Silky quintic ease-in-out curve (นุ่มที่สุดที่ทำได้)

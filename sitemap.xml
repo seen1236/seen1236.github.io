@@ -2,6 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://seen1236.github.io/</loc>
+<<<<<<< HEAD
     <lastmod>2026-11-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
@@ -43,5 +44,12 @@
       <image:loc>https://seen1236.github.io/certificate-scratch.webp</image:loc>
       <image:title>เกียรติบัตรรางวัลชนะเลิศ Scratch — ณัฐนันท์ ตรีทศ</image:title>
     </image:image>
+=======
+    <lastmod>2026-10-09</lastmod>
+    <image:image><image:loc>https://seen1236.github.io/1778995068748.webp</image:loc></image:image>
+    <image:image><image:loc>https://seen1236.github.io/1781878817675.webp</image:loc></image:image>
+    <image:image><image:loc>https://seen1236.github.io/certificate-soft-power.webp</image:loc></image:image>
+    <image:image><image:loc>https://seen1236.github.io/certificate-scratch.webp</image:loc></image:image>
+>>>>>>> 2a13f9e570c6593d0e6504321535d8809ef52f98
   </url>
 </urlset>

@@ -10,7 +10,11 @@
     window.__introHold = true;
     document.documentElement.style.overflow = 'hidden';
 
+<<<<<<< HEAD
     var DRAW = 750, HOLD = 500, FADE = 900;
+=======
+    var DRAW = 3000, HOLD = 500, FADE = 900;
+>>>>>>> 2a13f9e570c6593d0e6504321535d8809ef52f98
     var total = writer.getTotalLength();
     writer.style.strokeDasharray = total;
     writer.style.strokeDashoffset = total;

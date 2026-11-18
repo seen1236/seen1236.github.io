@@ -6,9 +6,13 @@ const net = require('node:net');
 const path = require('node:path');
 const fs = require('node:fs');
 const os = require('node:os');
+<<<<<<< HEAD
 let chromium;
 try { ({chromium} = require(process.env.PLAYWRIGHT_MODULE || 'playwright')); }
 catch { console.log('SKIP language-transition.cjs: playwright is not installed.'); process.exit(0); }
+=======
+const {chromium} = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
+>>>>>>> 2a13f9e570c6593d0e6504321535d8809ef52f98
 (async()=>{
   const probe=net.createServer();probe.listen(0,'127.0.0.1');await once(probe,'listening');
   const port=probe.address().port;await new Promise(r=>probe.close(r));

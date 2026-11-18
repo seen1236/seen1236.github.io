@@ -1,10 +1,13 @@
 User-agent: *
 Allow: /
 Disallow: /api/
+<<<<<<< HEAD
 Disallow: /private/
 Disallow: /tests/
 
 User-agent: Googlebot-Image
 Allow: /
+=======
+>>>>>>> 2a13f9e570c6593d0e6504321535d8809ef52f98
 
 Sitemap: https://seen1236.github.io/sitemap.xml

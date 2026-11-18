@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const zlib = require('zlib');
 const {loadPolicy, createSecurity, baseHeaders, documentPolicy, safeStaticPath, contains} = require('./security.cjs');
+<<<<<<< HEAD
 let gameHandler;
 function handleGame(...args) {
   gameHandler ||= require('../game/server/auth.cjs')();
@@ -12,6 +13,12 @@ function handleGame(...args) {
 const port = Number(process.env.PORT || 3000);
 const root = __dirname;
 const gameRoot = path.resolve(root, '..', 'game', 'public');
+=======
+
+const port = Number(process.env.PORT || 3000);
+const bindAddress = process.env.BIND || '0.0.0.0';
+const root = __dirname;
+>>>>>>> 2a13f9e570c6593d0e6504321535d8809ef52f98
 let stopping = false;
 const activeSockets = new Set();
 const textExtensions = new Set(['.css', '.html', '.js', '.json', '.svg', '.txt', '.xml']);
@@ -34,8 +41,11 @@ const mimeTypes = {
   '.webp': 'image/webp',
   '.woff2': 'font/woff2',
   '.xml': 'application/xml; charset=utf-8',
+<<<<<<< HEAD
   '.ico': 'image/x-icon',
   '.webmanifest': 'application/manifest+json; charset=utf-8',
+=======
+>>>>>>> 2a13f9e570c6593d0e6504321535d8809ef52f98
 };
 
 const policy = loadPolicy(root);
@@ -128,7 +138,10 @@ function createFileStream(filePath, range) {
 function stopServer() {
   if (stopping) return;
   stopping = true;
+<<<<<<< HEAD
   gameHandler?.close();
+=======
+>>>>>>> 2a13f9e570c6593d0e6504321535d8809ef52f98
   server.close(() => process.exit(0));
   server.closeAllConnections?.();
   for (const socket of activeSockets) socket.destroy();
@@ -164,6 +177,7 @@ const server = http.createServer({maxHeaderSize: 16 * 1024}, (request, response)
     return;
   }
 
+<<<<<<< HEAD
   const gameApi = pathname.startsWith('/game/api/') || pathname.startsWith('/game/auth/');
   if (security.limited(request, gameApi ? 'game' : 'site', gameApi ? 1200 : 1024, gameApi ? 600 : 256)) {
     response.setHeader('Retry-After', '2'); sendError(response, 429, 'Too many requests'); return;
@@ -181,6 +195,16 @@ const server = http.createServer({maxHeaderSize: 16 * 1024}, (request, response)
     sendError(response, 404, 'Not found');
     return;
   }
+=======
+  if (pathname === '/ai-model' || pathname.startsWith('/ai-model/')) {
+    proxyAiModel(request, response);
+    return;
+  }
+
+  if (security.limited(request, 'site', 1024, 256)) {
+    response.setHeader('Retry-After', '2'); sendError(response, 429, 'Too many requests'); return;
+  }
+>>>>>>> 2a13f9e570c6593d0e6504321535d8809ef52f98
 
   if (pathname.startsWith('/api/')) {
     sendError(response, 404, JSON.stringify({error:'Endpoint not found'}), 'application/json');
@@ -193,6 +217,7 @@ const server = http.createServer({maxHeaderSize: 16 * 1024}, (request, response)
     return;
   }
 
+<<<<<<< HEAD
   // Keep the existing public URL while serving game files from their own folder.
   const isGameAsset = pathname.startsWith('/game/');
   const staticRoot = isGameAsset ? gameRoot : root;
@@ -202,6 +227,13 @@ const server = http.createServer({maxHeaderSize: 16 * 1024}, (request, response)
   const filePath = path.resolve(staticRoot, relativePath);
 
   if (path.relative(staticRoot, filePath).startsWith('..') || path.isAbsolute(path.relative(staticRoot, filePath))) {
+=======
+  const relativePath = pathname === '/' ? 'index.html' : pathname.replace(/^\/+/, '');
+  if (!safeStaticPath(relativePath)) {sendError(response, 404, 'Not found'); return;}
+  const filePath = path.resolve(root, relativePath);
+
+  if (path.relative(root, filePath).startsWith('..') || path.isAbsolute(path.relative(root, filePath))) {
+>>>>>>> 2a13f9e570c6593d0e6504321535d8809ef52f98
     sendError(response, 403, 'Forbidden');
     return;
   }
@@ -217,7 +249,11 @@ const server = http.createServer({maxHeaderSize: 16 * 1024}, (request, response)
 
   fs.realpath(filePath, (realError, resolvedFile) => {
     const privatePaths = ['private', 'tests'].map(name => path.resolve(root, name));
+<<<<<<< HEAD
     if (realError || !contains(staticRoot, resolvedFile) || privatePaths.some(dir => contains(dir, resolvedFile))) {sendError(response, 404, 'Not found'); return;}
+=======
+    if (realError || !contains(root, resolvedFile) || privatePaths.some(dir => contains(dir, resolvedFile))) {sendError(response, 404, 'Not found'); return;}
+>>>>>>> 2a13f9e570c6593d0e6504321535d8809ef52f98
   fs.stat(resolvedFile, async (error, stats) => {
     if (error || !stats.isFile()) {
       sendError(response, 404, 'Not found');
@@ -356,10 +392,45 @@ for (const name of ['index.html', 'site.css', 'website-runtime.js', 'ui-polish.j
   });
 }
 
+<<<<<<< HEAD
 server.listen(port, '0.0.0.0', () => {
   const localUrl = `http://localhost:${port}`;
   console.log(`SEEN website is running at ${localUrl}`);
   console.log(`Network access is enabled on port ${port}.`);
+=======
+// The AI chat runs as its own loopback-only process (START-AI.cmd); this site server
+// only forwards /ai-model/ so the chat can share port 3000 with the portfolio.
+const AI_INTERNAL_PORT = Number(process.env.AI_INTERNAL_PORT || 3002);
+function proxyAiModel(request, response) {
+  const remote = request.socket.remoteAddress.replace(/^::ffff:/, '');
+  if (remote !== '127.0.0.1' && remote !== '::1') {
+    sendError(response, 404, 'Not found');
+    return;
+  }
+  request.setTimeout(0);
+  const upstream = http.request({
+    host: '127.0.0.1',
+    port: AI_INTERNAL_PORT,
+    path: request.url,
+    method: request.method,
+    headers: Object.assign({}, request.headers, { host: '127.0.0.1:' + AI_INTERNAL_PORT })
+  }, up => {
+    response.writeHead(up.statusCode, up.headers);
+    up.pipe(response);
+  });
+  upstream.on('error', () => {
+    if (response.headersSent) { response.end(); return; }
+    response.writeHead(503, { 'Content-Type': 'text/html; charset=utf-8' });
+    response.end('<!doctype html><meta charset="utf-8"><title>AI Model Chat</title><p style="font-family:sans-serif;padding:40px">ยังไม่ได้เปิดเซิร์ฟเวอร์ AI — ดับเบิลคลิก START-AI.cmd แล้วโหลดหน้านี้ใหม่</p>');
+  });
+  request.pipe(upstream);
+}
+
+server.listen(port, bindAddress, () => {
+  const localUrl = `http://localhost:${port}`;
+  console.log(`SEEN website is running at ${localUrl}`);
+  console.log(`Network access is enabled on ${bindAddress}:${port}.`);
+>>>>>>> 2a13f9e570c6593d0e6504321535d8809ef52f98
 });
 
 for (const signal of ['SIGINT', 'SIGTERM']) {

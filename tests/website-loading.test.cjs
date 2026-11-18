@@ -12,7 +12,11 @@ const web = path.join(__dirname, '..');
 test('entry resources are deferred and static styles load separately', () => {
   const html = fs.readFileSync(path.join(web, 'index.html'), 'utf8');
   const scripts = [...html.matchAll(/<script defer src="([^"]+)"/g)].map(match => match[1].split('?')[0]);
+<<<<<<< HEAD
   assert.deepEqual(scripts, ['intro.js', 'website-runtime.js', 'ui-polish.js', 'section-navigation.js']);
+=======
+  assert.deepEqual(scripts, ['website-runtime.js', 'ui-polish.js', 'section-navigation.js']);
+>>>>>>> 2a13f9e570c6593d0e6504321535d8809ef52f98
   for (const file of scripts) assert.ok(fs.statSync(path.join(web, file)).isFile());
   assert.ok(html.indexOf('as="font"') < html.indexOf('<link rel="stylesheet"'));
   assert.ok(html.indexOf('fetchpriority="high"') < html.indexOf('<link rel="stylesheet"'));

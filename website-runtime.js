@@ -128,15 +128,9 @@ function smoothScrollTo(targetY, fromWheel, options){
     var startY = window.scrollY;
     var diff = targetY - startY;
     var startTime = performance.now();
-<<<<<<< HEAD
     // Ultra-smooth duration (reduced by 50% for faster response: 475ms default)
     var duration = options && Number.isFinite(options.duration)
         ? Math.max(150, Math.min(750, options.duration)) : 475;
-=======
-    // Ultra-smooth duration (950ms default) for luxurious gliding
-    var duration = options && Number.isFinite(options.duration)
-        ? Math.max(300, Math.min(1500, options.duration)) : 950;
->>>>>>> 2a13f9e570c6593d0e6504321535d8809ef52f98
     function tick(now){
         var p = Math.min(1, (now - startTime) / duration);
         // Silky quintic ease-in-out curve (นุ่มที่สุดที่ทำได้)
@@ -1336,5 +1330,411 @@ window.addEventListener('pageshow', function(event){
         if(!anchor) return;
         event.preventDefault();
         activate(anchor, event.ctrlKey || event.metaKey || event.shiftKey);
+    });
+})();
+
+// Site search: forgiving index over the portfolio's visible data.
+// Case-insensitive, Thai tone-mark insensitive, partial, repeated-letter and
+// one-typo tolerant so queries like seen1236 / SEEN / natthanan treetos /
+// nattanan / treetos / ณัฐนันท์ / ตรีทศ all land on the right sections.
+(function setupSiteSearch(){
+    var overlay=document.getElementById('search-overlay');
+    var input=document.getElementById('search-input');
+    var list=document.getElementById('search-results');
+    var openButton=document.getElementById('search-open');
+    var closeButton=document.getElementById('search-close');
+    if(!overlay||!input||!list||!openButton) return;
+
+    var ENTRIES=[
+        {
+            title:'SEEN · ณัฐนันท์ ตรีทศ',
+            sub:'ซีน · seen1236 · Natthanan Treetos — แฟ้มสะสมผลงาน',
+            tag:'โปรไฟล์',target:'hero-section',priority:10,
+            keys:'SEEN ซีน ซี seen seen1236 seen_1236 seen 1236 @seen1236 seen1236yt seen1236tt seen1236ig '+
+                'ณัฐนันท์ ตรีทศ ณัฐนันท์ตรีทศ ณัฐนัน ณัฐนนท์ ณัฐนันทน์ ณัฐนันธ์ นันท์ ตรีทส '+
+                'Natthanan Treetos NatthananTreetos Natthanan nattanan nattanan treetos '+
+                'nattanantreetos natthanun nathanan naththanan natthanon treetos treetoss trees toss '+
+                'profile portfolio แฟ้มสะสมผลงาน ผลงาน แนะนำตัว เว็บไซต์ หน้าหลัก home main seen website '+
+                '03 02 16'
+        },
+        {
+            title:'เกี่ยวกับ SEEN — เรื่องราว',
+            sub:'ชื่อเล่นซีน ความฝันอยากเป็นครู คอมพิวเตอร์เครื่องแรก',
+            tag:'เรื่องราว',target:'story-section',priority:7,
+            keys:'เรื่องราว story about ประวัติ แนะนำตัว ตัวตน เกี่ยวกับผม เกี่ยวกับซีน ซีนคือใคร seen คือใคร '+
+                'ใครคือ seen ณัฐนันท์ ตรีทศ hello สวัสดี ครู teacher ความฝัน dream อยากเป็นครู อนาคต future '+
+                'คอมพิวเตอร์ computer เครื่องคอม ม.3 มัธยม 3 มัธยมศึกษาปีที่ 3 grade 9 ประกอบคอม ประกอบเอง '+
+                'ซื้อคอม note บันทึก ข้อความ เขียนเมื่อ 5 กรกฎาคม 2569 5 กรกฎาคม 2026 july 2026'
+        },
+        {
+            title:'ทักษะและความเชี่ยวชาญ',
+            sub:'Lua · กีตาร์ · ตัดต่อวิดีโอ/รูปภาพ · 3D · ADB & Android · Kotlin · AI',
+            tag:'ทักษะ',target:'skills-section',priority:7,
+            keys:'ทักษะ ความสามารถ skills skill expertise ความถนัด ถนัด ภาษา lua เล่นกีตาร์ กีตาร์ guitar '+
+                'ตัดต่อวิดีโอ video editing video effects ตัดต่อรูปภาพ photo editing ตัดต่อ ภาพ วิดีโอ '+
+                'สร้างโมเดล 3 มิติ 3d modeler 3d modeling 3d model โมเดล adb android kotlin ai ai integration '+
+                'ปัญญาประดิษฐ์ คอมพิวเตอร์ computer ประกอบคอม เทคโนโลยี technology creative สร้างสรรค์'
+        },
+        {
+            title:'UPTIME · วันเกิด · ข้อมูลส่วนตัว',
+            sub:'อายุ 16 · ไข่ดาว · พระนครศรีอยุธยา',
+            tag:'ข้อมูล',target:'personal-status-section',priority:3,
+            keys:'uptime เวลาทำงาน อัปไทม์ เดินเครื่อง next birthday วันเกิด birthday เกิด อายุ age sixteen '+
+                'ขวบ ปี countdown นับถอยหลัง timer เวลา info status ข้อมูล สถานะ food อาหาร ไข่ดาว fried egg '+
+                'กิน present พระนครศรีอยุธยา อยุธยา ayutthaya นครศรี ที่อยู่ จังหวัด location'
+        },
+        {
+            title:'YouTube — @seen1236_yt',
+            sub:'1.29K ซับ · เข้าร่วม พ.ค. 2021',
+            tag:'โซเชียล',target:'social-section',priority:5,
+            keys:'youtube ยูทูป ยูทูบ yt seen1236yt seen1236_yt @seen1236_yt 1.29k 1290 subs subscriber '+
+                'ผู้ติดตาม followers subscribe ช่อง channel วิดีโอ video คลิป clip 2021'
+        },
+        {
+            title:'TikTok — @seen1236_tt',
+            sub:'บัญชีใหม่ · ผู้ติดตาม 12',
+            tag:'โซเชียล',target:'social-section',priority:4,
+            keys:'tiktok ติ๊กต็อก ติ๊กต๊อก ติกตอก seen1236tt seen1236_tt @seen1236_tt ผู้ติดตาม followers '+
+                '12 บัญชีใหม่ new account วิดีโอ video คลิป clip'
+        },
+        {
+            title:'Instagram — @seen1236_ig',
+            sub:'ผู้ติดตาม 113 · เข้าร่วม ก.ค. 2022',
+            tag:'โซเชียล',target:'social-section',priority:4,
+            keys:'instagram ig อินสตาแกรม อินสตา seen1236ig seen1236_ig @seen1236_ig ผู้ติดตาม followers '+
+                '113 102 รูป ภาพ รูปภาพ photo 2022'
+        },
+        {
+            title:'Facebook — seen1236',
+            sub:'facebook.com/seen1236',
+            tag:'โซเชียล',target:'social-section',priority:3,
+            keys:'facebook fb เฟซบุ๊ก เฟสบุ๊ค เฟสบุ๊ก seen1236 seen1236fb'
+        },
+        {
+            title:'GitHub — SEEN1236',
+            sub:'ซอร์สโค้ดของ SEEN',
+            tag:'ซอร์สโค้ด',target:'downloads-section',priority:4,
+            keys:'github กิตฮับ git seen1236 seen1236github source code ซอร์สโค้ด โค้ด code repo repository '+
+                'โปรเจกต์ projects'
+        },
+        {
+            title:'ดาวน์โหลดโปรเจกต์ & ผลงาน',
+            sub:'AutoSystem · PaintStudio · GPS Cam — Windows และ Android',
+            tag:'ดาวน์โหลด',target:'downloads-section',priority:9,
+            keys:'ดาวน์โหลด download downloads ผลงาน projects project แอป apps application โปรแกรม ไฟล์ '+
+                'exe apk windows android ติดตั้ง install apps by seen ของผม ทั้งหมด 3 สาม seen seen1236 '+
+                'ณัฐนันท์ ตรีทศ'
+        },
+        {
+            title:'AutoSystem',
+            sub:'คลิกอัตโนมัติ · มาโคร Windows · EXE 68.43 MB',
+            tag:'แอป',target:'downloads-section',focus:'autosystem',priority:6,
+            keys:'autosystem auto system autoclicker auto click auto-clicker คลิกอัตโนมัติ คลิกออโต้ '+
+                'ออโต้คลิก มาโคร macro บันทึกและเล่นมาโคร บันทึก คลิก windows exe 68.43 mb 68 mb 68.43 '+
+                'เครื่องมือ tool'
+        },
+        {
+            title:'PaintStudio',
+            sub:'แอปวาดภาพและงานสร้างสรรค์ · EXE 0.90 MB',
+            tag:'แอป',target:'downloads-section',focus:'paintstudio',priority:6,
+            keys:'paintstudio paint studio แอปวาด วาดภาพ วาด รูปภาพ ภาพวาด drawing draw art creative '+
+                'สร้างสรรค์ ภาพ windows exe 0.90 mb 0.9 mb 900 kb เครื่องมือ'
+        },
+        {
+            title:'GPS Cam',
+            sub:'แอปกล้อง GPS สำหรับ Android · APK 44.46 KB',
+            tag:'แอป',target:'downloads-section',focus:'gps-cam',priority:6,
+            keys:'gps cam gpscam กล้อง camera speed ความเร็ว 94 km/h kmh เข็มทิศ แผนที่ map navigator '+
+                'android apk 44.46 kb 44 kb โทรศัพท์ มือถือ phone mobile'
+        },
+        {
+            title:'เกียรติบัตรและรางวัล',
+            sub:'Soft Power Roblox · Scratch ชนะเลิศ',
+            tag:'เกียรติบัตร',target:'certificates-section',priority:8,
+            keys:'เกียรติบัตร รางวัล certificates certificate awards award ประกาศนียบัตร competition แข่งขัน '+
+                'ชนะเลิศ school โรงเรียน สอง 2 ณัฐนันท์ ตรีทศ'
+        },
+        {
+            title:'Thailand’s Soft Power Roblox Game Creation Festival',
+            sub:'เข้าร่วมแข่งขัน · 30 ส.ค. 2569',
+            tag:'เกียรติบัตร',target:'certificates-section',priority:5,
+            keys:'thailand soft power roblox game creation festival ไทยแลนด์ ซอฟต์พาวเวอร์ ซอฟต์ เพาเวอร์ '+
+                'เกม game creation เข้าร่วม participant 30 สิงหาคม 2569 30 ส.ค. 2569 august 30 2026 '+
+                'มัธยมศึกษา ปวช secondary vocational'
+        },
+        {
+            title:'การแข่งขันสร้างชิ้นงานด้วยโปรแกรม Scratch',
+            sub:'รางวัลชนะเลิศ · 18 ส.ค. 2565',
+            tag:'เกียรติบัตร',target:'certificates-section',priority:5,
+            keys:'scratch สแครช การแข่งขันสร้างชิ้นงานด้วยโปรแกรม scratch รางวัลชนะเลิศ ชนะเลิศ first place '+
+                '18 สิงหาคม 2565 18 ส.ค. 2565 august 18 2022 มัธยมศึกษาตอนต้น lower secondary '+
+                'วันวิทยาศาสตร์ science day'
+        },
+        {
+            title:'ติดต่อ & ติดตามผลงาน',
+            sub:'nattanantreetos@gmail.com · Gmail',
+            tag:'ติดต่อ',target:'contact-section',priority:8,
+            keys:'ติดต่อ contact ติดต่อผม email อีเมล อีเมล์ gmail จีเมล mail เมล จดหมาย '+
+                'nattanantreetos nattanantreetos gmail com nattanan treetos nattanan natthanan '+
+                'ณัฐนันท์ ตรีทศ ส่งข้อความ feedback ความคิดเห็น comment คุย talk message ติดตาม follow'
+        }
+    ];
+
+    function normalize(text){
+        var s=String(text==null?'':text).toLowerCase();
+        if(s.normalize){
+            try{ s=s.normalize('NFD').replace(/[\u0300-\u036f]/g,''); }catch(e){}
+        }
+        // Thai above/below vowels and tone marks are optional when typing.
+        s=s.replace(/[\u0e31\u0e34-\u0e3a\u0e47-\u0e4e]/g,'');
+        s=s.replace(/[^a-z0-9\u0e00-\u0e7f]+/g,' ');
+        return s.replace(/\s+/g,' ').trim();
+    }
+    function skeleton(word){
+        return word.replace(/([a-z])\1+/g,'$1');
+    }
+    function distance(a,b){
+        var la=a.length,lb=b.length;
+        if(!la) return lb;
+        if(!lb) return la;
+        if(Math.abs(la-lb)>6) return 99;
+        var prev=new Array(lb+1),cur=new Array(lb+1),i,j;
+        for(j=0;j<=lb;j++) prev[j]=j;
+        for(i=1;i<=la;i++){
+            cur[0]=i;
+            var ca=a.charCodeAt(i-1);
+            for(j=1;j<=lb;j++){
+                cur[j]=Math.min(prev[j]+1,cur[j-1]+1,prev[j-1]+(ca===b.charCodeAt(j-1)?0:1));
+            }
+            var swap=prev;prev=cur;cur=swap;
+        }
+        return prev[lb];
+    }
+
+    var prepared=ENTRIES.map(function(entry,order){
+        var hay=normalize(entry.keys);
+        var words=hay?hay.split(' '):[];
+        return {
+            entry:entry,
+            order:order,
+            hay:hay,
+            tight:hay.replace(/ /g,''),
+            words:words,
+            skeletons:words.map(skeleton),
+            haySkeleton:skeleton(hay)
+        };
+    });
+
+    function tokenScore(record,token){
+        var best=0;
+        var idx=record.hay.indexOf(token);
+        if(idx!==-1){
+            best=720+Math.min(140,token.length*9);
+            if(idx===0||record.hay.charAt(idx-1)===' ') best+=45;
+        }
+        if(!best&&token.length>=3&&record.tight.indexOf(token)!==-1) best=560;
+        if(!best){
+            var sk=skeleton(token);
+            if(sk.length>=2&&record.haySkeleton.indexOf(sk)!==-1) best=520;
+            var slack=Math.max(2,Math.round(token.length*0.44));
+            for(var i=0;i<record.words.length;i++){
+                var word=record.words[i];
+                if(Math.abs(word.length-token.length)<=slack){
+                    var d=distance(token,word);
+                    var sim=1-d/Math.max(token.length,word.length);
+                    if(sim>=0.68) best=Math.max(best,240+Math.round(sim*200));
+                }
+                var wskel=record.skeletons[i];
+                if(sk.length>=2&&Math.abs(wskel.length-sk.length)<=slack){
+                    var ds=distance(sk,wskel);
+                    var sims=1-ds/Math.max(sk.length,wskel.length||1);
+                    if(sims>=0.72) best=Math.max(best,210+Math.round(sims*180));
+                }
+            }
+        }
+        return best;
+    }
+
+    function find(raw){
+        var query=normalize(raw);
+        if(!query){
+            return prepared.slice().sort(function(a,b){
+                return (b.entry.priority||0)-(a.entry.priority||0)||a.order-b.order;
+            });
+        }
+        var tokens=query.split(' ');
+        var scored=[];
+        prepared.forEach(function(record){
+            var total=0;
+            for(var i=0;i<tokens.length;i++){
+                var score=tokenScore(record,tokens[i]);
+                if(!score){ total=0; break; }
+                total+=score;
+            }
+            if(total>0) scored.push({record:record,score:total+(record.entry.priority||0)*6});
+        });
+        scored.sort(function(a,b){
+            return b.score-a.score||(b.record.entry.priority||0)-(a.record.entry.priority||0)||a.record.order-b.record.order;
+        });
+        return scored.map(function(item){return item.record;});
+    }
+
+    var currentResults=[];
+    var activeIndex=-1;
+    var lastFocus=null;
+    var html=document.documentElement;
+    var body=document.body;
+    var savedHtmlOverflow='';
+    var savedBodyOverflow='';
+
+    function setActive(index,scroll){
+        var buttons=list.querySelectorAll('.search-result');
+        if(!buttons.length) return;
+        if(index<0) index=buttons.length-1;
+        if(index>=buttons.length) index=0;
+        activeIndex=index;
+        for(var i=0;i<buttons.length;i++){
+            var selected=i===index;
+            buttons[i].classList.toggle('is-active',selected);
+            buttons[i].setAttribute('aria-selected',selected?'true':'false');
+        }
+        input.setAttribute('aria-activedescendant','search-result-'+index);
+        if(scroll&&buttons[index]&&buttons[index].scrollIntoView){
+            buttons[index].scrollIntoView({block:'nearest'});
+        }
+    }
+
+    function render(){
+        var query=input.value;
+        var found=find(query).slice(0,10);
+        currentResults=found;
+        activeIndex=found.length?0:-1;
+        list.textContent='';
+        if(!found.length){
+            var empty=document.createElement('div');
+            empty.className='search-empty';
+            empty.appendChild(document.createTextNode('ไม่พบผลลัพธ์สำหรับ '));
+            var strong=document.createElement('strong');
+            strong.textContent=query.trim()||'…';
+            empty.appendChild(strong);
+            empty.appendChild(document.createElement('br'));
+            empty.appendChild(document.createTextNode('ลองพิมพ์ ซีน · seen1236 · ชื่อผลงาน · ทักษะ · ติดต่อ'));
+            list.appendChild(empty);
+            input.removeAttribute('aria-activedescendant');
+            return;
+        }
+        found.forEach(function(record,index){
+            var entry=record.entry;
+            var button=document.createElement('button');
+            button.type='button';
+            button.className='search-result'+(index===activeIndex?' is-active':'');
+            button.id='search-result-'+index;
+            button.setAttribute('role','option');
+            button.setAttribute('aria-selected',index===activeIndex?'true':'false');
+            var main=document.createElement('span');
+            main.className='search-result-main';
+            var title=document.createElement('span');
+            title.className='search-result-title';
+            title.textContent=entry.title;
+            var sub=document.createElement('span');
+            sub.className='search-result-sub';
+            sub.textContent=entry.sub||'';
+            main.appendChild(title);
+            main.appendChild(sub);
+            var tag=document.createElement('span');
+            tag.className='search-result-tag';
+            tag.textContent=entry.tag||'';
+            button.appendChild(main);
+            button.appendChild(tag);
+            button.addEventListener('click',function(){goTo(entry);});
+            button.addEventListener('pointermove',function(){setActive(index,false);});
+            list.appendChild(button);
+        });
+        input.setAttribute('aria-activedescendant','search-result-'+activeIndex);
+    }
+
+    function goTo(entry){
+        closeSearch(true);
+        var target=document.getElementById(entry.target);
+        var focusEl=document.getElementById(entry.focus||entry.target)||target;
+        if(typeof window.scrollToSection==='function'&&target){
+            window.scrollToSection(entry.target);
+        }else if(target){
+            target.scrollIntoView({behavior:'smooth',block:'start'});
+        }
+        if(focusEl){
+            window.setTimeout(function(){
+                focusEl.classList.add('search-target-flash');
+                window.setTimeout(function(){focusEl.classList.remove('search-target-flash');},2200);
+            },520);
+        }
+    }
+
+    function openSearch(){
+        if(overlay.classList.contains('active')){
+            input.focus();
+            input.select();
+            return;
+        }
+        lastFocus=document.activeElement;
+        if(typeof stopScrollTween==='function') stopScrollTween();
+        savedHtmlOverflow=html.style.overflow;
+        savedBodyOverflow=body.style.overflow;
+        overlay.classList.add('active');
+        overlay.setAttribute('aria-hidden','false');
+        html.classList.add('modal-active');
+        body.classList.add('modal-active');
+        html.style.overflow='hidden';
+        body.style.overflow='hidden';
+        input.value='';
+        render();
+        window.setTimeout(function(){input.focus();},20);
+    }
+
+    function closeSearch(keepFocus){
+        if(!overlay.classList.contains('active')) return;
+        overlay.classList.remove('active');
+        overlay.setAttribute('aria-hidden','true');
+        html.classList.remove('modal-active');
+        body.classList.remove('modal-active');
+        html.style.overflow=savedHtmlOverflow||'';
+        body.style.overflow=savedBodyOverflow||'';
+        if(!keepFocus&&lastFocus&&lastFocus.focus) lastFocus.focus({preventScroll:true});
+        lastFocus=null;
+    }
+
+    openButton.addEventListener('click',openSearch);
+    if(closeButton) closeButton.addEventListener('click',function(){closeSearch();});
+    overlay.addEventListener('click',function(event){
+        if(event.target===overlay) closeSearch();
+    });
+    input.addEventListener('input',render);
+    input.addEventListener('keydown',function(event){
+        if(event.key==='ArrowDown'){event.preventDefault();setActive(activeIndex+1,true);}
+        else if(event.key==='ArrowUp'){event.preventDefault();setActive(activeIndex-1,true);}
+        else if(event.key==='Enter'){
+            event.preventDefault();
+            var record=currentResults[activeIndex>=0?activeIndex:0];
+            if(record) goTo(record.entry);
+        }
+        else if(event.key==='Escape'){event.preventDefault();event.stopPropagation();closeSearch();}
+    });
+    document.addEventListener('keydown',function(event){
+        if(event.defaultPrevented||event.isComposing) return;
+        var target=event.target;
+        var typing=target&&(target.tagName==='INPUT'||target.tagName==='TEXTAREA'||target.tagName==='SELECT'||target.isContentEditable);
+        if((event.ctrlKey||event.metaKey)&&!event.altKey&&(event.key==='k'||event.key==='K')){
+            event.preventDefault();
+            openSearch();
+            return;
+        }
+        if(event.key==='/'&&!typing&&!event.ctrlKey&&!event.metaKey&&!event.altKey){
+            event.preventDefault();
+            openSearch();
+        }
+        if(event.key==='Escape'&&overlay.classList.contains('active')){
+            event.preventDefault();
+            closeSearch();
+        }
     });
 })();

@@ -20,11 +20,7 @@ function loadPolicy(root) {
   };
   const trustedProxies = addresses('trustedProxyIPs');
   const allowedPeers = addresses('allowedPeerIPs');
-<<<<<<< HEAD
   const publicOrigin = new URL(config.publicOrigin || 'https://s.jirayu.net').origin;
-=======
-  const publicOrigin = new URL(config.publicOrigin || 'https://seen1236.github.io').origin;
->>>>>>> 2a13f9e570c6593d0e6504321535d8809ef52f98
   if (!publicOrigin.startsWith('https://')) throw Error('Public origin requires HTTPS');
   return {trustedProxies, allowedPeers, publicOrigin};
 }
@@ -125,9 +121,5 @@ function safeStaticPath(relative) {
   if (ext === '.json') return ['manifest.json'].includes(name);
   return staticExtensions.has(ext);
 }
-<<<<<<< HEAD
-const staticExtensions = new Set(['.apk', '.exe', '.css', '.html', '.js', '.png', '.jpg', '.jpeg', '.gif', '.avif', '.svg', '.txt', '.webp', '.woff2', '.xml', '.glb', '.gltf', '.bin', '.mp3', '.ogg', '.wav', '.ico', '.webmanifest']);
-=======
 const staticExtensions = new Set(['.apk', '.exe', '.css', '.html', '.js', '.png', '.jpg', '.jpeg', '.gif', '.avif', '.svg', '.txt', '.webp', '.woff2', '.xml', '.glb', '.gltf', '.bin', '.mp3', '.ogg', '.wav']);
->>>>>>> 2a13f9e570c6593d0e6504321535d8809ef52f98
 module.exports = {loadPolicy, createSecurity, baseHeaders, documentPolicy, safeStaticPath, contains, loopback, normalizeIp};

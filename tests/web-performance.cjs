@@ -6,13 +6,9 @@ const path = require('node:path');
 const http = require('node:http');
 const zlib = require('node:zlib');
 const assert = require('node:assert/strict');
-<<<<<<< HEAD
 let chromium;
 try { ({ chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright')); }
 catch { console.log('SKIP web-performance.cjs: playwright is not installed.'); process.exit(0); }
-=======
-const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
->>>>>>> 2a13f9e570c6593d0e6504321535d8809ef52f98
 
 const [htmlFile, assetDirectory, reportFile, functional] = process.argv.slice(2);
 if (!htmlFile || !assetDirectory || !reportFile) throw new Error('Pass HTML, asset directory, and report paths.');

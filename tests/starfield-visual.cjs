@@ -2,13 +2,9 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const assert = require('node:assert/strict');
-<<<<<<< HEAD
 let chromium;
 try { ({ chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright')); }
 catch { console.log('SKIP starfield-visual.cjs: playwright is not installed.'); process.exit(0); }
-=======
-const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
->>>>>>> 2a13f9e570c6593d0e6504321535d8809ef52f98
 function starfield(html) {
   const start = html.indexOf('(function initInteractiveStarfield(){');
   const end = html.indexOf("if('serviceWorker' in navigator)", start);

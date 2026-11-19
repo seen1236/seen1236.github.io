@@ -428,19 +428,45 @@ html.page-loading .bento > .footer.load-ready{
     position:absolute!important;
     top:50%!important;
     left:50%!important;
-    transform:translate(-50%, -50%)!important;
     width:min(calc(100vw - 40px), 60vh, 460px)!important;
     width:min(calc(100dvw - 40px), 60dvh, 460px)!important;
     height:auto!important;
-    aspect-ratio:3/4;
-    border-radius:28px!important;
+    aspect-ratio:1/1;
+    border-radius:50%!important;
     background-size:cover!important;
     background-position:var(--avatar-full-position,center)!important;
-    border:1px solid #ffffff26!important;
-    box-shadow:0 12px 48px #0009!important;
+    border:0!important;
+    box-shadow:
+        0 22px 40px -16px rgba(0,0,0,0.8),
+        0 44px 80px -30px rgba(0,0,0,0.65)!important;
+    transform:translate(-50%, -50%)!important;
     margin:0!important;
+    animation:avatarFullIn .4s cubic-bezier(.16,1,.3,1);
 }
-@media(max-width:700px){.avatar-full-img{border-radius:24px!important;}}
+.avatar-full-img::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:50%;
+    pointer-events:none;
+    background:
+        radial-gradient(115% 115% at 50% 36%, rgba(255,255,255,0.14), rgba(255,255,255,0) 42%, rgba(0,0,0,0.1) 72%, rgba(0,0,0,0.34) 100%);
+}
+.avatar-full-img::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:50%;
+    pointer-events:none;
+    box-shadow:
+        inset 0 -10px 18px rgba(0,0,0,0.28),
+        inset 0 4px 10px rgba(255,255,255,0.12);
+}
+@keyframes avatarFullIn{
+    from{opacity:0;}
+    to{opacity:1;}
+}
+@media(max-width:700px){.avatar-full-img{border-radius:50%!important;}}
 
 
 /* Hide scrollbars while preserving scrolling and the remaining image dialogs. */

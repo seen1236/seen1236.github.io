@@ -43,8 +43,6 @@ function createSecurity(policy) {
   function clientIp(req) {
     const peer = normalizeIp(req.socket.remoteAddress);
     if (!policy.trustedProxies.has(peer)) return peer;
-    // Read from the trusted end of the proxy chain. A visitor's forged leftmost
-    // X-Forwarded-For value cannot replace the real peer appended by the proxy.
     const chain = String(req.headers['x-forwarded-for'] || '').split(',').map(s => normalizeIp(s.trim()));
     if (!chain.length || chain.length > 8 || chain.some(ip => !net.isIP(ip))) return peer;
     for (let i = chain.length - 1; i >= 0; i--) if (!policy.trustedProxies.has(chain[i])) return chain[i];

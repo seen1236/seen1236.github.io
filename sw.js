@@ -1,5 +1,3 @@
-// Migration only: retire older SEEN workers and their offline caches.
-// No fetch handler, offline copy, or response storage is installed.
 self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', event => {
   event.waitUntil((async () => {

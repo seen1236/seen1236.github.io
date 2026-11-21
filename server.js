@@ -51,8 +51,6 @@ function sendError(response, statusCode, message, contentType = 'text/plain; cha
   response.end(message);
 }
 
-// Reuse small text buffers and compressed representations after validating the
-// filesystem version. Large downloads stay streamed with bounded backpressure.
 const brotliOptions = {params: {[zlib.constants.BROTLI_PARAM_QUALITY]: 6}};
 const gzipOptions = {level: 6};
 const maxBufferedTextBytes = 512 * 1024;
@@ -139,7 +137,6 @@ const server = http.createServer({maxHeaderSize: 16 * 1024}, (request, response)
   request.securityClientIp = security.clientIp(request);
   if (!security.acquire(request, response)) {response.setHeader('Retry-After', '5'); sendError(response, 429, 'Too many active requests'); return;}
   if (request.url.length > 4096 || !request.url.startsWith('/') || request.url.startsWith('//')) {sendError(response, 400, 'Bad request'); return;}
-  // Preserve traversal evidence before URL parsing normalizes dot segments.
   const rawPath = request.url.split('?')[0];
   let rawDecoded;
   try {rawDecoded = decodeURIComponent(rawPath);} catch {sendError(response, 400, 'Bad request'); return;}
@@ -156,7 +153,6 @@ const server = http.createServer({maxHeaderSize: 16 * 1024}, (request, response)
     return;
   }
 
-  // Null byte injection protection
   if (pathname.includes('\0')) {
     sendError(response, 400, 'Bad request');
     return;
@@ -191,7 +187,6 @@ const server = http.createServer({maxHeaderSize: 16 * 1024}, (request, response)
     return;
   }
 
-  // Keep the existing public URL while serving game files from their own folder.
   const isGameAsset = pathname.startsWith('/game/');
   const staticRoot = isGameAsset ? gameRoot : root;
   const relativePath = isGameAsset ? pathname === '/game/' ? 'index.html' : pathname.slice('/game/'.length)
@@ -204,7 +199,6 @@ const server = http.createServer({maxHeaderSize: 16 * 1024}, (request, response)
     return;
   }
 
-  // Private directories stay outside the static route space.
   for(const privateDirectory of [path.resolve(root,'private'), path.resolve(root,'tests')]){
     const storageRelative = path.relative(privateDirectory, filePath);
     if (!storageRelative || (!storageRelative.startsWith('..') && !path.isAbsolute(storageRelative))) {
@@ -251,7 +245,6 @@ const server = http.createServer({maxHeaderSize: 16 * 1024}, (request, response)
       }
     }
     let range;
-    // No stored validators remain: an If-Range request needs the full fresh file.
     const rangeMatch = !request.headers['if-range'] && /^bytes=(\d*)-(\d*)$/.exec(request.headers.range || '');
     if (rangeMatch) {
       const suffix = rangeMatch[1] === '';
@@ -278,7 +271,6 @@ const server = http.createServer({maxHeaderSize: 16 * 1024}, (request, response)
     }
 
     if (encoding && stats.size <= maxBufferedTextBytes) {
-      // Concurrent visitors share one asynchronous compression job per version.
       compressedFile(resolvedFile, stats, encoding).then(body => {
         if (response.destroyed) return;
         headers['Content-Length'] = body.length;
@@ -302,7 +294,6 @@ const server = http.createServer({maxHeaderSize: 16 * 1024}, (request, response)
       return;
     }
 
-    // Incoming-body deadlines do not bound a client that never reads a download.
     response.setTimeout(30000, () => response.destroy());
     const transferDeadline = setTimeout(() => response.destroy(), 15 * 60 * 1000);
     transferDeadline.unref();
@@ -344,8 +335,7 @@ server.once('error', (error) => {
   process.exit(1);
 });
 
-// Warm the few entry resources without delaying startup or caching their validity.
-for (const name of ['index.html', 'site.css', 'website-runtime.js', 'ui-polish.js']) {
+for (const name of ['index.html', 'site.css', 'interactions.css', 'website-runtime.js', 'ui-polish.js', 'donate.js', 'section-navigation.js', 'intro.js', 'manifest.json']) {
   const filePath = path.join(root, name);
   fs.stat(filePath, (error, stats) => {
     if (!error && stats.isFile() && stats.size <= maxBufferedTextBytes) {

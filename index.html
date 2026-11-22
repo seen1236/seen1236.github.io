@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="google" content="notranslate">
 <link rel="preload" href="1778995068748.webp?fresh=116" as="image" type="image/webp" fetchpriority="high">
+<link rel="preload" href="qr-code.webp" as="image" type="image/webp">
 <script defer src="intro.js?v=1"></script>
 <script defer src="website-runtime.js?v=search-261119"></script>
 <script defer src="ui-polish.js?v=site-20261015-3"></script>
@@ -255,7 +256,8 @@ window.__seenRevealFallback = setTimeout(function(){
       <div class="donate-stack">
         <div class="donate-view" id="donate-view-promptpay" role="tabpanel" aria-labelledby="donate-tab-promptpay">
           <div class="donate-qr-card">
-            <canvas id="donate-qr" width="464" height="464" role="img" aria-label="QR Code PromptPay จำนวน 5.00 บาท"></canvas>
+            <canvas id="donate-qr" width="464" height="464" aria-hidden="true"></canvas>
+            <img id="donate-qr-image" class="donate-qr-image" alt="QR Code PromptPay จำนวน 5.00 บาท" width="464" height="464" decoding="async">
           </div>
           <div class="donate-amount-line">
             <span class="donate-label">จำนวนเงิน</span>
@@ -277,7 +279,7 @@ window.__seenRevealFallback = setTimeout(function(){
         </div>
         <div class="donate-view is-off" id="donate-view-truemoney" role="tabpanel" aria-labelledby="donate-tab-truemoney" aria-hidden="true">
           <div class="donate-qr-card">
-            <img id="donate-truemoney-qr" class="donate-qr-image" data-src="qr-code.webp" alt="QR Code TrueMoney Wallet ของ ณัฐนันท์ ตรีทศ" width="464" height="466" decoding="async">
+            <img id="donate-truemoney-qr" class="donate-qr-image" src="qr-code.webp" alt="QR Code TrueMoney Wallet ของ ณัฐนันท์ ตรีทศ" width="464" height="466" decoding="async">
           </div>
         </div>
       </div>
@@ -594,20 +596,20 @@ INSTAGRAM
 </h3>
 <div class="btn-group">
 <a class="btn" id="autosystem" href="https://github.com/seen1236/seen1236.github.io/releases/download/v1.0.0/Auto.System.exe" download="Auto System.exe" onclick="event.preventDefault();triggerDownload('https://github.com/seen1236/seen1236.github.io/releases/download/v1.0.0/Auto.System.exe')">
-<span class="project-preview preview-system"><img class="project-real-image" data-section-src="autosystem-preview.webp?v=2" alt="หน้าตาโปรแกรม AutoSystem: ตั้งค่าคลิกอัตโนมัติ บันทึกและเล่นมาโคร (ผลงานของ SEEN / ณัฐนันท์ ตรีทศ)" width="474" height="472" loading="lazy" decoding="async"><noscript><img class="project-real-image" src="autosystem-preview.webp?v=2" alt="หน้าตาโปรแกรม AutoSystem" width="474" height="472" loading="lazy" decoding="async"></noscript></span>
-<img data-section-src="exe.webp?fresh=116" alt="AutoSystem" width="22" height="22" loading="lazy" decoding="async"><noscript><img src="exe.webp?fresh=116" alt="AutoSystem" width="22" height="22" loading="lazy" decoding="async"></noscript>
+<span class="project-preview preview-system"><img class="project-real-image" data-section-src="autosystem-preview.webp?v=2" alt="หน้าตาโปรแกรม AutoSystem: ตั้งค่าคลิกอัตโนมัติ บันทึกและเล่นมาโคร (ผลงานของ SEEN / ณัฐนันท์ ตรีทศ)" width="474" height="472" decoding="async"><noscript><img class="project-real-image" src="autosystem-preview.webp?v=2" alt="หน้าตาโปรแกรม AutoSystem" width="474" height="472" loading="lazy" decoding="async"></noscript></span>
+<img data-section-src="exe.webp?fresh=116" alt="AutoSystem" width="22" height="22" decoding="async"><noscript><img src="exe.webp?fresh=116" alt="AutoSystem" width="22" height="22" loading="lazy" decoding="async"></noscript>
 <span class="download-file"><span class="download-name">AutoSystem</span><span class="project-description">เครื่องมือคลิกอัตโนมัติ บันทึกและเล่นมาโครบน Windows</span><span class="download-meta">EXE · 68.43 MB</span></span>
 <svg class="download-arrow" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m-4-4 4 4 4-4M5 17v4h14v-4"/></svg>
 </a>
 <a class="btn" id="tunemic" href="https://github.com/seen1236/seen1236.github.io/releases/download/v1.0.0/TuneMic.exe" download="TuneMic.exe" onclick="event.preventDefault();triggerDownload('https://github.com/seen1236/seen1236.github.io/releases/download/v1.0.0/TuneMic.exe')">
-<span class="project-preview preview-paint"><img class="project-real-image" data-section-src="micimagae.webp?v=1" alt="หน้าตาโปรแกรม TuneMic: อีควอไลเซอร์ 31 แบนด์ พร้อม Noise Gate และไดรเวอร์เสียงบน Windows (ผลงานของ SEEN / ณัฐนันท์ ตรีทศ)" width="800" height="619" loading="lazy" decoding="async"><noscript><img class="project-real-image" src="micimagae.webp?v=1" alt="หน้าตาโปรแกรม TuneMic" width="800" height="619" loading="lazy" decoding="async"></noscript></span>
-<img data-section-src="mic.webp?v=1" alt="TuneMic" width="22" height="22" loading="lazy" decoding="async"><noscript><img src="mic.webp?v=1" alt="TuneMic" width="22" height="22" loading="lazy" decoding="async"></noscript>
+<span class="project-preview preview-paint"><img class="project-real-image" data-section-src="micimagae.webp?v=1" alt="หน้าตาโปรแกรม TuneMic: อีควอไลเซอร์ 31 แบนด์ พร้อม Noise Gate และไดรเวอร์เสียงบน Windows (ผลงานของ SEEN / ณัฐนันท์ ตรีทศ)" width="520" height="402" decoding="async"><noscript><img class="project-real-image" src="micimagae.webp?v=1" alt="หน้าตาโปรแกรม TuneMic" width="520" height="402" loading="lazy" decoding="async"></noscript></span>
+<img data-section-src="mic.webp?v=1" alt="TuneMic" width="22" height="22" decoding="async"><noscript><img src="mic.webp?v=1" alt="TuneMic" width="22" height="22" loading="lazy" decoding="async"></noscript>
 <span class="download-file"><span class="download-name">TuneMic</span><span class="project-description">ปรับแต่งเสียงไมโครโฟน 31-band EQ พร้อม Noise Gate บน Windows</span><span class="download-meta">EXE · 1.77 MB</span></span>
 <svg class="download-arrow" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m-4-4 4 4 4-4M5 17v4h14v-4"/></svg>
 </a>
 <a class="btn" id="paintstudio" href="https://github.com/seen1236/seen1236.github.io/releases/download/v1.0.0/PaintStudio.exe" download onclick="event.preventDefault();triggerDownload('https://github.com/seen1236/seen1236.github.io/releases/download/v1.0.0/PaintStudio.exe')">
-<span class="project-preview preview-paint"><img class="project-real-image" data-section-src="paintstudio-preview-dark.webp?v=2" alt="ภาพพรีวิว PaintStudio โทนดำ พร้อมตัวอย่างงานวาดขาวเทา เครื่องมือ สี และเลเยอร์ (ผลงานของ SEEN / ณัฐนันท์ ตรีทศ)" width="800" height="545" loading="lazy" decoding="async"><noscript><img class="project-real-image" src="paintstudio-preview-dark.webp?v=2" alt="หน้าตาโปรแกรม PaintStudio" width="800" height="545" loading="lazy" decoding="async"></noscript></span>
-<img data-section-src="paintapp-icon.webp?fresh=116" alt="PaintStudio" width="22" height="22" loading="lazy" decoding="async"><noscript><img src="paintapp-icon.webp?fresh=116" alt="PaintStudio" width="22" height="22" loading="lazy" decoding="async"></noscript>
+<span class="project-preview preview-paint"><img class="project-real-image" data-section-src="paintstudio-preview-dark.webp?v=2" alt="ภาพพรีวิว PaintStudio โทนดำ พร้อมตัวอย่างงานวาดขาวเทา เครื่องมือ สี และเลเยอร์ (ผลงานของ SEEN / ณัฐนันท์ ตรีทศ)" width="540" height="368" decoding="async"><noscript><img class="project-real-image" src="paintstudio-preview-dark.webp?v=2" alt="หน้าตาโปรแกรม PaintStudio" width="540" height="368" loading="lazy" decoding="async"></noscript></span>
+<img data-section-src="paintapp-icon.webp?fresh=116" alt="PaintStudio" width="22" height="22" decoding="async"><noscript><img src="paintapp-icon.webp?fresh=116" alt="PaintStudio" width="22" height="22" loading="lazy" decoding="async"></noscript>
 <span class="download-file"><span class="download-name">PaintStudio</span><span class="project-description">โปรเจกต์แอปวาดภาพและงานสร้างสรรค์</span><span class="download-meta">EXE · 0.90 MB</span></span>
 <svg class="download-arrow" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m-4-4 4 4 4-4M5 17v4h14v-4"/></svg>
 </a>
@@ -620,8 +622,8 @@ INSTAGRAM
 </h3>
 <div class="btn-group">
 <a class="btn" id="gps-cam" href="https://github.com/seen1236/seen1236.github.io/releases/download/v1.0.0/GPSCam.apk" download="GPS Cam.apk" onclick="event.preventDefault();triggerDownload('https://github.com/seen1236/seen1236.github.io/releases/download/v1.0.0/GPSCam.apk')">
-<span class="project-preview preview-gps"><span class="gps-phone"><img class="project-real-image" data-section-src="gps-cam-mobile-portrait.webp?v=2" alt="ภาพจำลอง GPS Cam ขณะใช้งานบนมือถือ Android แนวตั้ง พร้อมหน้าปัด 94 km/h และเข็มทิศ (ผลงานของ SEEN / ณัฐนันท์ ตรีทศ)" width="360" height="780" loading="lazy" decoding="async"><noscript><img class="project-real-image" src="gps-cam-mobile-portrait.webp?v=2" alt="ภาพจำลอง GPS Cam บนมือถือ Android แนวตั้ง" width="360" height="780" loading="lazy" decoding="async"></noscript></span></span>
-<img data-section-src="apk.webp?fresh=116" alt="GPS Cam" style="border-radius:4px;" width="22" height="22" loading="lazy" decoding="async"><noscript><img src="apk.webp?fresh=116" alt="GPS Cam" style="border-radius:4px;" width="22" height="22" loading="lazy" decoding="async"></noscript>
+<span class="project-preview preview-gps"><span class="gps-phone"><img class="project-real-image" data-section-src="gps-cam-mobile-portrait.webp?v=2" alt="ภาพจำลอง GPS Cam ขณะใช้งานบนมือถือ Android แนวตั้ง พร้อมหน้าปัด 94 km/h และเข็มทิศ (ผลงานของ SEEN / ณัฐนันท์ ตรีทศ)" width="160" height="347" decoding="async"><noscript><img class="project-real-image" src="gps-cam-mobile-portrait.webp?v=2" alt="ภาพจำลอง GPS Cam บนมือถือ Android แนวตั้ง" width="160" height="347" loading="lazy" decoding="async"></noscript></span></span>
+<img data-section-src="apk.webp?fresh=116" alt="GPS Cam" style="border-radius:4px;" width="22" height="22" decoding="async"><noscript><img src="apk.webp?fresh=116" alt="GPS Cam" style="border-radius:4px;" width="22" height="22" loading="lazy" decoding="async"></noscript>
 <span class="download-file"><span class="download-name">GPS Cam</span><span class="project-description">โปรเจกต์แอปสำหรับโทรศัพท์ Android</span><span class="download-meta">APK · 44.46 KB</span></span>
 <svg class="download-arrow" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m-4-4 4 4 4-4M5 17v4h14v-4"/></svg>
 </a>
@@ -636,7 +638,7 @@ INSTAGRAM
 </div>
 <div class="slot-certs-grid">
 <button type="button" class="certificate-card slot-cert-item" onclick="openCertificate('certificate-soft-power.webp?fresh=116', this.querySelector('img').alt)">
-<div class="certificate-image-wrap"><img data-section-src="certificate-soft-power.webp?fresh=116" alt="เกียรติบัตร ณัฐนันท์ ตรีทศ เข้าร่วม Thailand's Soft Power Roblox Game Creation Festival" width="1315" height="930" loading="lazy" decoding="async"><noscript><img src="certificate-soft-power.webp?fresh=116" alt="เกียรติบัตร ณัฐนันท์ ตรีทศ เข้าร่วม Thailand's Soft Power Roblox Game Creation Festival" width="1315" height="930" loading="lazy" decoding="async"></noscript></div>
+<div class="certificate-image-wrap"><img data-section-src="certificate-soft-power.webp?fresh=116" alt="เกียรติบัตร ณัฐนันท์ ตรีทศ เข้าร่วม Thailand's Soft Power Roblox Game Creation Festival" width="1315" height="930" decoding="async"><noscript><img src="certificate-soft-power.webp?fresh=116" alt="เกียรติบัตร ณัฐนันท์ ตรีทศ เข้าร่วม Thailand's Soft Power Roblox Game Creation Festival" width="1315" height="930" loading="lazy" decoding="async"></noscript></div>
 <div class="certificate-copy">
 <div class="certificate-title">Thailand’s Soft Power Roblox Game Creation Festival</div>
 <div class="certificate-meta">เข้าร่วมแข่งขัน · 30 ส.ค. 2569</div>
@@ -644,7 +646,7 @@ INSTAGRAM
 </div>
 </button>
 <button type="button" class="certificate-card slot-cert-item" onclick="openCertificate('certificate-scratch.webp?fresh=116', this.querySelector('img').alt)">
-<div class="certificate-image-wrap"><img data-section-src="certificate-scratch.webp?fresh=116" alt="เกียรติบัตร ณัฐนันท์ ตรีทศ รางวัลชนะเลิศการแข่งขันสร้างชิ้นงานด้วยโปรแกรม Scratch" width="1170" height="782" loading="lazy" decoding="async"><noscript><img src="certificate-scratch.webp?fresh=116" alt="เกียรติบัตร ณัฐนันท์ ตรีทศ รางวัลชนะเลิศการแข่งขันสร้างชิ้นงานด้วยโปรแกรม Scratch" width="1170" height="782" loading="lazy" decoding="async"></noscript></div>
+<div class="certificate-image-wrap"><img data-section-src="certificate-scratch.webp?fresh=116" alt="เกียรติบัตร ณัฐนันท์ ตรีทศ รางวัลชนะเลิศการแข่งขันสร้างชิ้นงานด้วยโปรแกรม Scratch" width="1170" height="782" decoding="async"><noscript><img src="certificate-scratch.webp?fresh=116" alt="เกียรติบัตร ณัฐนันท์ ตรีทศ รางวัลชนะเลิศการแข่งขันสร้างชิ้นงานด้วยโปรแกรม Scratch" width="1170" height="782" loading="lazy" decoding="async"></noscript></div>
 <div class="certificate-copy">
 <div class="certificate-title">การแข่งขันสร้างชิ้นงานด้วยโปรแกรม Scratch</div>
 <div class="certificate-meta">รางวัลชนะเลิศ · 18 ส.ค. 2565</div>

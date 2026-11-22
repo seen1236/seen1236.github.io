@@ -1,11 +1,5 @@
-<<<<<<< HEAD
-*.exe filter=lfs diff=lfs merge=lfs -text
-*.apk filter=lfs diff=lfs merge=lfs -text
-*.zip filter=lfs diff=lfs merge=lfs -text
-=======
 * text=auto eol=lf
 *.exe filter=lfs diff=lfs merge=lfs -text
 *.apk filter=lfs diff=lfs merge=lfs -text
 *.zip filter=lfs diff=lfs merge=lfs -text
 *.mp4 filter=lfs diff=lfs merge=lfs -text
->>>>>>> c6a62d4bd581a1aa1705ad04cd2b07362d700d04

@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://s.jirayu.net/</loc>
-    <lastmod>2026-11-19</lastmod>
+    <lastmod>2026-11-22</lastmod>
     <image:image>
       <image:loc>https://s.jirayu.net/1778995068748.webp</image:loc>
       <image:title>ภาพโปรไฟล์หลัก ณัฐนันท์ ตรีทศ (SEEN / seen1236)</image:title>
@@ -47,6 +47,16 @@
       <image:loc>https://s.jirayu.net/paintapp-icon.webp</image:loc>
       <image:title>ไอคอนแอป PaintStudio โดย SEEN</image:title>
       <image:caption>ไอคอน PaintStudio ผลงานของณัฐนันท์ ตรีทศ</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://s.jirayu.net/micimagae.webp</image:loc>
+      <image:title>หน้าจอโปรแกรม TuneMic โดย SEEN (ณัฐนันท์ ตรีทศ)</image:title>
+      <image:caption>TuneMic — โปรแกรมปรับแต่งเสียงไมโครโฟน 31-band EQ และ Noise Gate สำหรับ Windows ผลงานของณัฐนันท์ ตรีทศ</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://s.jirayu.net/mic.webp</image:loc>
+      <image:title>ไอคอนแอป TuneMic โดย SEEN</image:title>
+      <image:caption>ไอคอน TuneMic ผลงานของณัฐนันท์ ตรีทศ</image:caption>
     </image:image>
   </url>
 </urlset>
